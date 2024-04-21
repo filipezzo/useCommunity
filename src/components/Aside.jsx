@@ -19,7 +19,7 @@ const navList = [
 
 export function Aside() {
 	return (
-		<aside className=" hidden md:ml-4  md:mt-12 md:block md:h-[500px]  md:w-full md:max-w-[200px]  md:rounded-md md:bg-neutral-900/40 md:p-5 xl:ml-0 xl:mt-8 xl:max-w-[250px]  ">
+		<aside className=" hidden md:ml-4 md:mr-4  md:mt-4 md:block md:h-[500px]  md:w-full md:max-w-[200px]  md:rounded-md md:bg-neutral-900/40 md:p-5 xl:ml-0 xl:max-w-[250px]  ">
 			<nav>
 				<ul className="flex flex-col gap-5">
 					{navList.map((item, index) => (

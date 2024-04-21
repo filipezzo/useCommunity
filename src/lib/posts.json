@@ -1,0 +1,44 @@
+[
+	{
+		"id": "e4eaaaf2-d142-11e1-b3e4-080027620cdd",
+		"username": "dev_guru",
+		"avatar": "https://example.com/avatar1.png",
+		"titulo": "Introdução ao React.js",
+		"conteudo": "Este post oferece uma introdução básica ao React.js, abordando seus principais conceitos e funcionalidades. É ideal para iniciantes que desejam começar a aprender React e criar aplicativos web modernos e eficientes.",
+		"tags": ["#react", "#javascript", "#frontend"],
+		"comentarios": [
+			{
+				"autor": "user123",
+				"conteudo": "Ótimo post! Estou ansioso para aprender mais sobre React."
+			}
+		]
+	},
+	{
+		"id": "e4eaaaf2-d142-11e1-b3e4-080027620cde",
+		"username": "code_ninja",
+		"avatar": "https://example.com/avatar2.png",
+		"titulo": "Como se tornar um desenvolvedor full-stack",
+		"conteudo": "Este post oferece insights e dicas sobre como se tornar um desenvolvedor full-stack, cobrindo os principais conhecimentos e habilidades necessários tanto no desenvolvimento frontend quanto no backend. É um guia útil para aspirantes a desenvolvedores que desejam expandir suas habilidades e se tornar proficientes em todas as áreas do desenvolvimento de software.",
+		"tags": ["#programacao", "#frontend", "#backend"],
+		"comentarios": [
+			{
+				"autor": "dev_junior",
+				"conteudo": "Esse é o meu objetivo! Obrigado pelas dicas."
+			}
+		]
+	},
+	{
+		"id": "e4eaaaf2-d142-11e1-b3e4-080027620cdf",
+		"username": "tech_wizard",
+		"avatar": "https://example.com/avatar3.png",
+		"titulo": "Principais tendências em tecnologia para 2024",
+		"conteudo": "Este post destaca as principais tendências em tecnologia para o ano de 2024, incluindo inteligência artificial, realidade aumentada, blockchain e muito mais. É uma leitura essencial para profissionais de tecnologia e entusiastas que desejam se manter atualizados sobre as últimas inovações e avanços na indústria de tecnologia.",
+		"tags": ["#tecnologia", "#inovacao"],
+		"comentarios": [
+			{
+				"autor": "it_enthusiast",
+				"conteudo": "Interessante! Estou curioso para ver como essas tendências se desenvolverão ao longo do ano."
+			}
+		]
+	}
+]
