@@ -3,7 +3,7 @@ import { ref, set } from "firebase/database";
 import { Cpu } from "lucide-react";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { InputLabel } from "../../components/InputLabel";
 import { Loader } from "../../components/Loader";
 import { auth, db } from "../../lib/firebase";
@@ -18,8 +18,6 @@ export function Create() {
 		url: "",
 	});
 	const [loading, setLoading] = useState(false);
-
-	const nav = useNavigate();
 
 	const handleAvatar = (e) => {
 		if (e.target.files[0]) {
@@ -46,7 +44,6 @@ export function Create() {
 				email,
 				password,
 			);
-
 			await set(ref(db, `users/${createUser.user.uid}`), {
 				username,
 				email,
@@ -55,10 +52,7 @@ export function Create() {
 				points: 0,
 			});
 
-			toast.success("Conta criada com sucesso");
-			setTimeout(() => {
-				nav("/login");
-			}, 1500);
+			toast.success("Conta criada com sucesso! Volte e faça login");
 		} catch (error) {
 			if (error.message === "file is null") {
 				return toast.error("Por favor, adicione um Avatar");
@@ -130,20 +124,22 @@ export function Create() {
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>
-						<div className="flex items-center justify-between">
-							<Link
-								className="text-sm underline duration-300 hover:text-blue-500/70 focus:text-blue-500/70"
-								to="/"
-							>
-								Voltar
-							</Link>
-							<Link
-								className="text-sm underline duration-300 hover:text-blue-500/70 focus:text-blue-500/70"
-								to="/login"
-							>
-								Já tenho uma conta
-							</Link>
-						</div>
+						{!loading && (
+							<div className="flex items-center justify-between">
+								<Link
+									className="text-sm underline duration-300 hover:text-blue-500/70 focus:text-blue-500/70"
+									to="/"
+								>
+									Voltar
+								</Link>
+								<Link
+									className="text-sm underline duration-300 hover:text-blue-500/70 focus:text-blue-500/70"
+									to="/login"
+								>
+									Já tenho uma conta
+								</Link>
+							</div>
+						)}
 
 						<button
 							disabled={loading}

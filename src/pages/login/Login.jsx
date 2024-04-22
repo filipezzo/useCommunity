@@ -1,6 +1,6 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { Cpu } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { InputLabel } from "../../components/InputLabel";
@@ -12,8 +12,10 @@ export function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
-	const { currentUser } = useUserStore();
 	const nav = useNavigate();
+	const { currentUser, fetchUser } = useUserStore();
+	console.log(currentUser);
+
 	const handleLogin = async (e) => {
 		e.preventDefault();
 		if (!email || !password) {
@@ -22,7 +24,6 @@ export function Login() {
 		setLoading(true);
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
-			if (currentUser) nav("/");
 		} catch (error) {
 			if (
 				error.message.startsWith("Firebase: Error (auth/invalid-credential).")
@@ -34,6 +35,18 @@ export function Login() {
 			setLoading(false);
 		}
 	};
+	useEffect(() => {
+		const unsub = onAuthStateChanged(auth, async (user) => {
+			await fetchUser(user?.uid);
+			if (user?.uid) {
+				nav("/");
+			}
+		});
+
+		return () => {
+			unsub();
+		};
+	}, [fetchUser, nav]);
 	return (
 		<>
 			<main className="mt-8 flex min-h-screen w-full flex-col items-center  p-4  ">
@@ -57,13 +70,7 @@ export function Login() {
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>
-						<div className="flex items-center justify-between">
-							<Link
-								className="text-sm underline duration-300 hover:text-blue-500/70 focus:text-blue-500/70"
-								to="/"
-							>
-								Voltar
-							</Link>
+						<div className="flex items-center justify-end">
 							<Link
 								className="text-sm underline duration-300 hover:text-blue-500/70 focus:text-blue-500/70"
 								to="/cadastro"
@@ -72,6 +79,7 @@ export function Login() {
 							</Link>
 						</div>
 						<button
+							type="submit"
 							disabled={loading}
 							className="my-8 rounded-xl bg-blue-500/70 px-4 py-2 font-medium text-white duration-300 hover:scale-105"
 						>

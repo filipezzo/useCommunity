@@ -1,25 +1,34 @@
-import { onAuthStateChanged } from "firebase/auth";
-import { useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
-import { auth } from "./lib/firebase";
 import { useUserStore } from "./lib/userStore";
 import { Create } from "./pages/create/Create";
 import { Home } from "./pages/home/Home";
 import Login from "./pages/login/Login";
+import PostPage from "./pages/post/PostPage";
+import { PrivateRoute } from "./routes/PrivateRoute";
 
 function App() {
-	const { fetchUser } = useUserStore();
-	useEffect(() => {
-		const unsub = onAuthStateChanged(auth, (user) => fetchUser(user?.uid));
-
-		return () => unsub();
-	}, [fetchUser]);
-
+	const { currentUser } = useUserStore();
+	console.log(currentUser);
 	return (
 		<Routes>
-			<Route path="/" element={<Home />} />
+			<Route
+				path="/"
+				element={
+					<PrivateRoute>
+						<Home />
+					</PrivateRoute>
+				}
+			/>
 			<Route path="/cadastro" element={<Create />} />
 			<Route path="/login" element={<Login />} />
+			<Route
+				path="/post/:id"
+				element={
+					<PrivateRoute>
+						<PostPage />
+					</PrivateRoute>
+				}
+			/>
 		</Routes>
 	);
 }

@@ -31,6 +31,7 @@ export function Home() {
 
 		fetchPosts();
 	}, []);
+
 	return (
 		<Layout>
 			<main className="mx-auto mt-4 flex w-full max-w-7xl md:p-4 xl:p-0">

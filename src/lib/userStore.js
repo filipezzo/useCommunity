@@ -4,7 +4,9 @@ import { api } from "../utils/api";
 export const useUserStore = create((set) => ({
 	currentUser: null,
 	fetchUser: async (uid) => {
-		if (!uid) return set({ currentUser: null });
+		if (!uid) {
+			return set({ currentUser: null });
+		}
 
 		try {
 			const response = await api.get(`/users/${uid}.json`);
