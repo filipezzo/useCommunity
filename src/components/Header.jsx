@@ -1,9 +1,9 @@
 import { Cpu, Menu, Search } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useUserStore } from "../lib/userStore";
 
 export function Header() {
-	const { pathname } = useLocation();
-	const isHome = pathname === "/";
+	const { currentUser } = useUserStore();
 	return (
 		<header className="sticky gap-4 border-b border-neutral-400 p-4 ">
 			<div className=" mx-auto flex w-full max-w-7xl items-center justify-between ">
@@ -21,19 +21,21 @@ export function Header() {
 
 				<div className="flex items-center gap-5">
 					<Search className="cursor-pointer xl:hidden" />
-					{isHome ? (
+
+					{currentUser ? (
+						<div className="size-10 ">
+							<img
+								className="h-full w-full rounded-full object-cover"
+								src={currentUser.avatar}
+								alt="foto de perfil"
+							/>
+						</div>
+					) : (
 						<Link
 							to="/cadastro"
 							className="rounded-md border border-blue-500/70  px-4 py-2 text-blue-500/70 duration-300 focus-within:bg-blue-500/70 focus-within:text-white hover:bg-blue-500/70 hover:text-white"
 						>
 							Criar conta
-						</Link>
-					) : (
-						<Link
-							to="/"
-							className="rounded-md border border-blue-500/70  px-4 py-2 text-blue-500/70 duration-300 focus-within:bg-blue-500/70 focus-within:text-white hover:bg-blue-500/70 hover:text-white"
-						>
-							Home
 						</Link>
 					)}
 				</div>

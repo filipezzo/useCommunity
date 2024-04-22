@@ -10,7 +10,7 @@ import Login from "./pages/login/Login";
 function App() {
 	const { fetchUser } = useUserStore();
 	useEffect(() => {
-		const unsub = onAuthStateChanged(auth, (user) => fetchUser(user.uid));
+		const unsub = onAuthStateChanged(auth, (user) => fetchUser(user?.uid));
 
 		return () => unsub();
 	}, [fetchUser]);

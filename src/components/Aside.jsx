@@ -1,9 +1,12 @@
-import { Flame, Home, User2 } from "lucide-react";
+import { Flame, Home, LogOut, User2 } from "lucide-react";
+import { Link } from "react-router-dom";
+import { auth } from "../lib/firebase";
 
 const navList = [
 	{
 		icon: <Home />,
 		label: "Home",
+		link: "/",
 	},
 
 	{
@@ -14,6 +17,14 @@ const navList = [
 	{
 		icon: <User2 />,
 		label: "Perfil",
+		link: "/perfil",
+	},
+
+	{
+		icon: <LogOut />,
+		label: "Sair",
+		link: "/login",
+		action: async () => auth.signOut(),
 	},
 ];
 
@@ -23,13 +34,15 @@ export function Aside() {
 			<nav>
 				<ul className="flex flex-col gap-5">
 					{navList.map((item, index) => (
-						<li
+						<Link
+							onClick={item.action}
+							to={item.link}
 							className="flex cursor-pointer items-center gap-2 duration-300 hover:text-blue-500/70"
 							key={index}
 						>
 							{item.icon}
 							<span className="text-sm">{item.label}</span>
-						</li>
+						</Link>
 					))}
 				</ul>
 			</nav>
