@@ -1,6 +1,7 @@
 import { Flame, Home, LogOut, User2 } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../lib/firebase";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../app/hooks/useAuth";
+import { auth } from "../../app/lib/firebase";
 
 const navList = [
 	{
@@ -22,15 +23,16 @@ const navList = [
 	{
 		icon: <LogOut />,
 		label: "Sair",
-		action: async () => auth.signOut(),
 	},
 ];
 
 export function Aside() {
-	const nav = useNavigate();
+	const { user, setUser } = useAuth();
+	console.log(user);
 	const handleLogout = async () => {
 		await auth.signOut();
-		nav("/login");
+		setUser(null);
+		console.log("oi");
 	};
 	return (
 		<aside className=" hidden md:ml-4 md:mr-4  md:mt-4 md:block md:h-[500px]  md:w-full md:max-w-[200px]  md:rounded-md md:bg-neutral-900/40 md:p-5 xl:ml-0 xl:max-w-[250px]  ">

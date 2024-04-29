@@ -8,8 +8,12 @@ export function Post({ post }) {
 				to={`/post/${post.id}`}
 				className="group flex flex-col gap-2.5 rounded-md border-neutral-700 bg-neutral-900/40 p-4 hover:cursor-pointer hover:opacity-80"
 			>
-				<header className="flex items-center gap-1">
-					<img src={avatar} className="size-10" />
+				<header className="flex items-center gap-1.5">
+					<img
+						src={post.avatar || avatar}
+						className="size-10  rounded-full object-cover"
+					/>
+
 					<h3>{post.username}</h3>
 				</header>
 				<h2 className="flex-1  text-xl font-medium duration-300 hover:cursor-pointer group-hover:text-blue-500/70">

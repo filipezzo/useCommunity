@@ -1,9 +1,10 @@
 import { Cpu, Menu, Search } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useUserStore } from "../lib/userStore";
+import { useAuth } from "../../app/hooks/useAuth";
+import avatar from "/profile7.svg";
 
 export function Header() {
-	const { currentUser } = useUserStore();
+	const { user } = useAuth();
 	return (
 		<header className="sticky gap-4 border-b border-neutral-400 p-4 ">
 			<div className=" mx-auto flex w-full max-w-7xl items-center justify-between ">
@@ -22,11 +23,20 @@ export function Header() {
 				<div className="flex items-center gap-5">
 					<Search className="cursor-pointer xl:hidden" />
 
-					{currentUser ? (
+					{user && (
+						<Link
+							className=" rounded-md px-4 py-2 text-white ring-1 ring-blue-700/70 "
+							to="/criar"
+						>
+							Criar Post
+						</Link>
+					)}
+
+					{user ? (
 						<div className="size-10 ">
 							<img
 								className="h-full w-full rounded-full object-cover"
-								src={currentUser.avatar}
+								src={user.avatar ?? avatar}
 								alt="foto de perfil"
 							/>
 						</div>

@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
+import { api } from "../../../app/utils/api";
 import { Aside } from "../../components/Aside";
 import { Layout } from "../../components/Layout";
 import { Loader } from "../../components/Loader";
-import { api } from "../../utils/api";
 import { Post } from "./components/Post";
 import { PostsList } from "./components/PostsList";
 import { Topics } from "./components/Topics";
 export function Home() {
-	const [posts, setPosts] = useState([]);
+	const [posts, setPosts] = useState({});
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const arr = Object.values(posts);
 
 	useEffect(() => {
 		setLoading(true);
@@ -17,7 +18,7 @@ export function Home() {
 
 		const fetchPosts = async () => {
 			try {
-				const response = await api.get("/posts.json");
+				const response = await api.get("/teste.json");
 				if (response.status !== 200) {
 					throw new Error("Algo deu errado ao buscar os posts");
 				}
@@ -40,8 +41,10 @@ export function Home() {
 					{loading && <Loader />}
 					{error && <p className="text-xl text-rose-500">{error}</p>}
 					<PostsList>
-						{posts.length > 0 ? (
-							posts.map((post) => <Post key={post.id} post={post} />)
+						{arr?.length > 0 ? (
+							arr.map((post) => (
+								<Post key={`${post.id} ${Math.random() * 100}`} post={post} />
+							))
 						) : (
 							<p>Sem posts</p>
 						)}

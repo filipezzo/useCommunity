@@ -4,10 +4,11 @@ import { Cpu } from "lucide-react";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../../app/hooks/useAuth";
+import { auth, db } from "../../../app/lib/firebase";
+import { upload } from "../../../app/lib/upload";
 import { InputLabel } from "../../components/InputLabel";
 import { Loader } from "../../components/Loader";
-import { auth, db } from "../../lib/firebase";
-import { upload } from "../../lib/upload";
 import defaultProfile from "/profile7.svg";
 export function Create() {
 	const [username, setUsername] = useState("");
@@ -28,6 +29,8 @@ export function Create() {
 		}
 	};
 
+	const { setUser } = useAuth();
+
 	const handleRegister = async (e) => {
 		e.preventDefault();
 		setLoading(true);
@@ -47,12 +50,13 @@ export function Create() {
 			await set(ref(db, `users/${createUser.user.uid}`), {
 				username,
 				email,
+				id: createUser.user.uid,
 				password,
 				avatar: imgUrl,
 				points: 0,
 			});
-
-			toast.success("Conta criada com sucesso! Volte e faça login");
+			setUser({ ...createUser, avatar: imgUrl });
+			toast.success("Conta criada com sucesso!");
 		} catch (error) {
 			if (error.message === "file is null") {
 				return toast.error("Por favor, adicione um Avatar");
@@ -72,7 +76,7 @@ export function Create() {
 
 	return (
 		<>
-			<main className="flex min-h-screen w-full flex-col  items-center p-4">
+			<main className="flex h-full w-full flex-col  items-center p-4">
 				<div className=" w-full max-w-3xl">
 					<Cpu size={48} className="mx-auto" />
 					<h1 className="my-4 text-center text-3xl font-medium text-blue-500/70 xl:text-4xl">
@@ -103,7 +107,7 @@ export function Create() {
 							/>
 						</div>
 						<InputLabel
-							text="Usuário"
+							text="Nome"
 							label="username"
 							type="text"
 							value={username}

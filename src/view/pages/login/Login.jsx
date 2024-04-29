@@ -1,20 +1,16 @@
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { Cpu } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { auth } from "../../../app/lib/firebase";
 import { InputLabel } from "../../components/InputLabel";
 import { Loader } from "../../components/Loader";
-import { auth } from "../../lib/firebase";
-import { useUserStore } from "../../lib/userStore";
 
 export function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
-	const nav = useNavigate();
-	const { currentUser, fetchUser } = useUserStore();
-	console.log(currentUser);
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -35,21 +31,10 @@ export function Login() {
 			setLoading(false);
 		}
 	};
-	useEffect(() => {
-		const unsub = onAuthStateChanged(auth, async (user) => {
-			await fetchUser(user?.uid);
-			if (user?.uid) {
-				nav("/");
-			}
-		});
 
-		return () => {
-			unsub();
-		};
-	}, [fetchUser, nav]);
 	return (
 		<>
-			<main className="mt-8 flex min-h-screen w-full flex-col items-center  p-4  ">
+			<main className="mt-8 flex h-full w-full flex-col items-center  p-4  ">
 				<div className=" w-full max-w-3xl">
 					<Cpu size={48} className="mx-auto" />
 					<h1 className="my-4 text-center text-3xl font-medium text-blue-500/70 xl:text-4xl">
