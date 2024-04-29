@@ -10,6 +10,7 @@ export function Home() {
 	const [posts, setPosts] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const arr = Object.values(posts);
 
 	useEffect(() => {
 		setLoading(true);
@@ -39,8 +40,8 @@ export function Home() {
 					{loading && <Loader />}
 					{error && <p className="text-xl text-rose-500">{error}</p>}
 					<PostsList>
-						{posts.length > 0 ? (
-							posts.map((post) => <Post key={post.id} post={post} />)
+						{arr.length > 0 ? (
+							arr.map((post) => <Post key={post.id} post={post} />)
 						) : (
 							<p>Sem posts</p>
 						)}
