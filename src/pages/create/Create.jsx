@@ -21,6 +21,10 @@ export function Create() {
 		}
 	};
 
+	const handleSubmit = (e) => {
+		e.preventDefault();
+	};
+
 	return (
 		<>
 			<main className="flex min-h-screen w-full flex-col  items-center p-4">
@@ -29,7 +33,7 @@ export function Create() {
 					<h1 className="my-4 text-center text-3xl font-medium text-blue-500/70 xl:text-4xl">
 						Crie sua conta
 					</h1>
-					<form className="flex flex-col gap-4">
+					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 						<div className="mx-auto mt-4 flex size-48  items-center justify-center  rounded-full border-2 border-neutral-500">
 							{avatar?.url ? (
 								<img
@@ -87,7 +91,10 @@ export function Create() {
 								Já tenho uma conta
 							</Link>
 						</div>
-						<button className="my-8 rounded-xl bg-blue-500/70 px-4 py-2 font-medium text-white duration-300 hover:scale-105">
+						<button
+							type="submit"
+							className="my-8 rounded-xl bg-blue-500/70 px-4 py-2 font-medium text-white duration-300 hover:scale-105"
+						>
 							Criar Conta
 						</button>
 					</form>

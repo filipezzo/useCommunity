@@ -6,6 +6,7 @@ import { InputLabel } from "../../components/InputLabel";
 export function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
+	const handleSubmit = (e) => e.preventDefault();
 	return (
 		<>
 			<main className="mt-16 flex min-h-screen w-full flex-col items-center  p-4  ">
@@ -14,7 +15,7 @@ export function Login() {
 					<h1 className="my-4 text-center text-3xl font-medium text-blue-500/70 xl:text-4xl">
 						Realize Login
 					</h1>
-					<form className="flex flex-col gap-4">
+					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 						<InputLabel
 							text="Email"
 							label="email"
@@ -43,7 +44,10 @@ export function Login() {
 								Criar uma conta
 							</Link>
 						</div>
-						<button className="my-8 rounded-xl bg-blue-500/70 px-4 py-2 font-medium text-white duration-300 hover:scale-105">
+						<button
+							type="submit"
+							className="my-8 rounded-xl bg-blue-500/70 px-4 py-2 font-medium text-white duration-300 hover:scale-105"
+						>
 							Entrar
 						</button>
 					</form>
