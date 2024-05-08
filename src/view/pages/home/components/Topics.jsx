@@ -2,40 +2,51 @@ import { Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { api } from "../../../../app/utils/api";
+import { Badge } from "../../../components/Badge";
+import { Loader } from "../../../components/Loader";
 
 export function Topics() {
 	const [topRanking, setTopRanking] = useState([]);
+	const [loading, setLoading] = useState(false);
 	const ranks = Object.values(topRanking);
 	const orderedByPoints = ranks.sort((a, b) => b.points - a.points);
 
 	useEffect(() => {
 		const fetchRanking = async () => {
+			setLoading(true);
 			try {
 				const { data } = await api.get(`/users.json`);
 				setTopRanking(data);
 			} catch (e) {
 				console.error(e);
 				toast.error("Erro Ao buscar ranking");
+			} finally {
+				setLoading(false);
 			}
 		};
 		fetchRanking();
 	}, []);
 	return (
-		<section className=" hidden overflow-hidden md:block md:h-[500px] md:max-w-[200px] md:rounded-md md:bg-neutral-900/40 md:p-5 xl:w-full xl:max-w-[250px] 2xl:max-w-[300px]">
+		<section className="hidden overflow-hidden md:block md:h-[500px] md:max-w-[200px] md:rounded-md md:bg-neutral-900/40 md:p-5 xl:h-[700px] xl:w-full xl:max-w-[250px] 2xl:max-w-[300px]">
 			<header className="mb-6 flex items-center  justify-between">
 				<h2 className="text-xl">Ranking </h2>
 				<Trophy size={20} />
 			</header>
-
+			{loading && <Loader variant />}
 			<ul className="flex flex-col gap-6 ">
 				{orderedByPoints &&
 					orderedByPoints.map(({ id, points, username }, index) => (
-						<li className="flex items-center justify-between" key={id}>
-							<strong>
+						<li className="flex w-full items-center  justify-between " key={id}>
+							<div className="flex flex-1 items-center gap-2">
 								<span className="mr-1 text-blue-500/70">#{index + 1}</span>
-								{username}
-							</strong>
-							<small className="font-bold">{points} pts</small>
+								<strong>{username}</strong>
+							</div>
+							<div className="flex w-20 flex-1 items-center justify-center">
+								<Badge elo={points} className="mx-0 size-8 flex-1 " />
+							</div>
+							<small className=" flex w-[60px] flex-1  justify-end  font-bold">
+								{points} pts
+							</small>
 						</li>
 					))}
 			</ul>

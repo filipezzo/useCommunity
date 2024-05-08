@@ -2,7 +2,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { Cpu } from "lucide-react";
 import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../../../app/lib/firebase";
 import { InputLabel } from "../../components/InputLabel";
 import { Loader } from "../../components/Loader";
@@ -11,6 +11,7 @@ export function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
+	const nav = useNavigate();
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -20,6 +21,7 @@ export function Login() {
 		setLoading(true);
 		try {
 			await signInWithEmailAndPassword(auth, email, password);
+			nav("/");
 		} catch (error) {
 			if (
 				error.message.startsWith("Firebase: Error (auth/invalid-credential).")
@@ -34,10 +36,10 @@ export function Login() {
 
 	return (
 		<>
-			<main className="mt-8 flex h-full w-full flex-col items-center  p-4  ">
-				<div className=" w-full max-w-3xl">
+			<main className="mt-8 flex h-full w-full flex-col items-center gap-8 p-4  lg:flex-row lg:items-center lg:justify-center xl:gap-16 ">
+				<div className=" w-full max-w-3xl   lg:w-1/2">
 					<Cpu size={48} className="mx-auto" />
-					<h1 className="my-4 text-center text-3xl font-medium text-blue-500/70 xl:text-4xl">
+					<h1 className="my-4 text-center text-3xl font-medium text-blue-500/70 lg:text-4xl">
 						Realize Login
 					</h1>
 					<form onSubmit={handleLogin} className="flex flex-col gap-4">
@@ -55,7 +57,13 @@ export function Login() {
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
 						/>
-						<div className="flex items-center justify-end">
+						<div className="flex items-center justify-between">
+							<Link
+								className="text-sm underline duration-300 hover:text-blue-500/70 focus:text-blue-500/70"
+								to="/"
+							>
+								Voltar
+							</Link>
 							<Link
 								className="text-sm underline duration-300 hover:text-blue-500/70 focus:text-blue-500/70"
 								to="/cadastro"
@@ -68,9 +76,15 @@ export function Login() {
 							disabled={loading}
 							className="my-8 rounded-xl bg-blue-500/70 px-4 py-2 font-medium text-white duration-300 hover:scale-105"
 						>
-							{loading ? <Loader variant /> : "Entrar"}
+							{loading ? <Loader /> : "Entrar"}
 						</button>
 					</form>
+				</div>
+				<div className=" hidden max-h-[700px]   overflow-hidden rounded-md    lg:flex lg:w-1/2 lg:max-w-[600px] lg:justify-center ">
+					<img
+						className="h-full rounded-md object-cover  sepia "
+						src="https://images.unsplash.com/photo-1579567761406-4684ee0c75b6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					/>
 				</div>
 			</main>
 			<Toaster />

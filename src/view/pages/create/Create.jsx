@@ -76,8 +76,8 @@ export function Create() {
 
 	return (
 		<>
-			<main className="flex h-full w-full flex-col  items-center p-4">
-				<div className=" w-full max-w-3xl">
+			<main className="flex h-full w-full flex-col  items-center gap-8 p-4 xl:flex-row xl:justify-center xl:gap-16">
+				<div className=" w-full max-w-3xl lg:order-2">
 					<Cpu size={48} className="mx-auto" />
 					<h1 className="my-4 text-center text-3xl font-medium text-blue-500/70 xl:text-4xl">
 						Crie sua conta
@@ -149,9 +149,16 @@ export function Create() {
 							disabled={loading}
 							className="my-8 rounded-xl bg-blue-500/70 px-4 py-2 font-medium text-white duration-300 hover:scale-105 disabled:cursor-not-allowed  disabled:bg-blue-500/20"
 						>
-							{loading ? <Loader variant /> : "Criar conta"}
+							{loading ? <Loader /> : "Criar conta"}
 						</button>
 					</form>
+				</div>
+
+				<div className=" hidden max-h-[700px]   overflow-hidden rounded-md    lg:order-1 lg:flex lg:w-1/2 lg:max-w-[600px] lg:justify-center ">
+					<img
+						className="h-full rounded-md object-cover  sepia "
+						src="https://images.unsplash.com/photo-1579567761406-4684ee0c75b6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+					/>
 				</div>
 			</main>
 			<Toaster position="top-center" />

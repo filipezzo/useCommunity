@@ -1,13 +1,14 @@
 import { Cpu, Menu, Search } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../app/hooks/useAuth";
+import { Button } from "./Button";
 import avatar from "/profile7.svg";
 
 export function Header() {
 	const { user } = useAuth();
 	return (
 		<header className="sticky gap-4 border-b border-neutral-400 p-4 ">
-			<div className=" mx-auto flex w-full max-w-7xl items-center justify-between ">
+			<div className=" mx-auto flex w-full max-w-[1200px] items-center justify-between ">
 				<div className="flex items-center gap-5">
 					<Menu className="cursor-pointer md:hidden" />
 					<Cpu />
@@ -24,12 +25,9 @@ export function Header() {
 					<Search className="cursor-pointer xl:hidden" />
 
 					{user && (
-						<Link
-							className=" rounded-md px-4 py-2 text-white ring-1 ring-blue-700/70 "
-							to="/criar"
-						>
-							Criar Post
-						</Link>
+						<Button>
+							<Link to="/criar">Criar Post</Link>
+						</Button>
 					)}
 
 					{user ? (
@@ -41,12 +39,9 @@ export function Header() {
 							/>
 						</div>
 					) : (
-						<Link
-							to="/cadastro"
-							className="rounded-md border border-blue-500/70  px-4 py-2 text-blue-500/70 duration-300 focus-within:bg-blue-500/70 focus-within:text-white hover:bg-blue-500/70 hover:text-white"
-						>
-							Criar conta
-						</Link>
+						<Button>
+							<Link to="/cadastro">Criar conta</Link>
+						</Button>
 					)}
 				</div>
 			</div>

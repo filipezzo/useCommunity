@@ -1,13 +1,13 @@
-import { ref, update } from "firebase/database";
+import { ref, set, update } from "firebase/database";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../app/hooks/useAuth";
 import { db } from "../../../app/lib/firebase";
-import { api } from "../../../app/utils/api";
+import { Button } from "../../components/Button";
 import { InputLabel } from "../../components/InputLabel";
-import { Layout } from "../../components/Layout";
 import { Loader } from "../../components/Loader";
+import { PageLayout } from "../layout/PageLayout";
 
 export function CreatePost() {
 	const [title, setTitle] = useState("");
@@ -15,10 +15,12 @@ export function CreatePost() {
 	const [isLoading, setIsLoading] = useState(false);
 	const { user, setUser } = useAuth();
 	const nav = useNavigate();
-	console.log(user.points);
+	const postid = crypto.randomUUID();
+
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setIsLoading(true);
+
 		if (!title.trim() || !content.trim()) {
 			return toast.error("Preencha os campos!");
 		}
@@ -29,11 +31,13 @@ export function CreatePost() {
 			id: user.id,
 			tags: [""],
 			titulo: title,
+			likes: 0,
 			username: user.username,
+			postid,
 		};
-		console.log(post);
+
 		try {
-			await api.post(`/teste.json`, post);
+			await set(ref(db, `/teste/${postid}`), post);
 			const userRef = ref(db, `/users/${user.id}`);
 			const points = +user.points + 5;
 
@@ -41,6 +45,9 @@ export function CreatePost() {
 			setUser({ ...user, points });
 			nav("/");
 		} catch (e) {
+			if (e.message.startsWith("update failed")) {
+				return toast.error("Post longo demais! Reduza o seu texto.");
+			}
 			toast.error("Erro ao criar post");
 			console.error(e);
 		} finally {
@@ -48,13 +55,11 @@ export function CreatePost() {
 		}
 	};
 	return (
-		<Layout>
-			<main className="mx-auto h-full w-full max-w-5xl border-l border-r border-neutral-400 p-8">
+		<PageLayout>
+			<section className="mx-auto h-full min-h-[600px]  w-full max-w-[80ch]  rounded-xl  bg-zinc-900/40  p-8 xl:h-[700px]">
 				<form onSubmit={handleSubmit} className="flex h-full flex-col gap-8">
 					<fieldset>
-						<legend className="mb-4 text-3xl font-medium">
-							Título do Post
-						</legend>
+						<legend className="mb-4 text-xl font-medium">Título do Post</legend>
 						<InputLabel
 							value={title}
 							onChange={(e) => setTitle(e.target.value)}
@@ -62,7 +67,7 @@ export function CreatePost() {
 						/>
 					</fieldset>
 					<fieldset className="h-full flex-1 ">
-						<legend className="mb-4 text-3xl font-medium">
+						<legend className="mb-4 text-xl font-medium">
 							Conteúdo do Post
 						</legend>
 						<textarea
@@ -72,15 +77,10 @@ export function CreatePost() {
 						/>
 					</fieldset>
 
-					<button
-						type="submit"
-						className="text-medium  max-w-fit rounded-md bg-blue-500/70 px-4 py-2 transition-colors duration-300 hover:scale-105 hover:opacity-80"
-					>
-						{isLoading ? <Loader variant /> : "Publicar"}
-					</button>
+					<Button type="submit">{isLoading ? <Loader /> : "Publicar"}</Button>
 				</form>
-			</main>
-		</Layout>
+			</section>
+		</PageLayout>
 	);
 }
 

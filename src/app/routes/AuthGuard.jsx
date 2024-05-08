@@ -5,11 +5,8 @@ export function AuthGuard({ isProtected }) {
 	const { user } = useAuth();
 
 	if (!user && isProtected) {
-		return <Navigate to="/login" replace />;
+		return <Navigate to="/" replace />;
 	}
 
-	if (user && !isProtected) {
-		return <Navigate to="/" />;
-	}
 	return <Outlet />;
 }
