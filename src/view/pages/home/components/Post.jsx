@@ -15,7 +15,7 @@ export function Post({ post }) {
 					/>
 					<h3>{post.username}</h3>
 				</header>
-				<h2 className="flex-1  text-xl font-medium duration-300 hover:cursor-pointer group-hover:bg-gradient-to-r group-hover:from-blue-500 group-hover:to-emerald-500 group-hover:bg-clip-text  group-hover:text-transparent">
+				<h2 className="group-hover:effect  flex-1 text-xl font-medium duration-300 hover:cursor-pointer  group-hover:border-none group-hover:text-transparent">
 					{post.titulo}
 				</h2>
 				<ul className="flex items-center gap-1 text-sm">
@@ -26,7 +26,10 @@ export function Post({ post }) {
 					<div className="flex items-end gap-2">
 						<MessageCircle />
 						<strong>
-							{post?.comentarios.length === 1 ? 0 : post?.comentarios.length}
+							{
+								post?.comentarios.filter((item) => item && item.autor != "")
+									.length
+							}
 						</strong>
 					</div>
 

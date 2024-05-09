@@ -39,8 +39,7 @@ export function CreatePost() {
 		try {
 			await set(ref(db, `/teste/${postid}`), post);
 			const userRef = ref(db, `/users/${user.id}`);
-			const points = +user.points + 5;
-
+			const points = +user.points + 3;
 			await update(userRef, { ...user, points });
 			setUser({ ...user, points });
 			nav("/");

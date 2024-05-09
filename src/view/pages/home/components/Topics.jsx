@@ -27,7 +27,7 @@ export function Topics() {
 		fetchRanking();
 	}, []);
 	return (
-		<section className="hidden overflow-hidden md:block md:h-[500px] md:max-w-[200px] md:rounded-md md:bg-neutral-900/40 md:p-5 xl:h-[700px] xl:w-full xl:max-w-[250px] 2xl:max-w-[300px]">
+		<section className="hidden overflow-hidden p-5 xl:block  xl:h-[700px] xl:w-full xl:max-w-[250px] xl:rounded-md xl:bg-neutral-900/40  ">
 			<header className="mb-6 flex items-center  justify-between">
 				<h2 className="text-xl">Ranking </h2>
 				<Trophy size={20} />
@@ -39,9 +39,9 @@ export function Topics() {
 						<li className="flex w-full items-center  justify-between " key={id}>
 							<div className="flex flex-1 items-center gap-2">
 								<span className="mr-1 text-blue-500/70">#{index + 1}</span>
-								<strong>{username}</strong>
+								<strong className="max-w-[9ch] truncate ">{username}</strong>
 							</div>
-							<div className="flex w-20 flex-1 items-center justify-center">
+							<div className="flex w-fit items-center justify-center">
 								<Badge elo={points} className="mx-0 size-8 flex-1 " />
 							</div>
 							<small className=" flex w-[60px] flex-1  justify-end  font-bold">
