@@ -13,7 +13,10 @@ export function Header() {
 			<div className=" mx-auto flex w-full max-w-[1200px] items-center justify-between ">
 				<div className="flex items-center gap-5">
 					<Menu className="cursor-pointer md:hidden" />
-					<Cpu />
+					<Link to="/">
+						<Cpu />
+					</Link>
+
 					{isHome && (
 						<div className="md:effect hidden gap-2 px-2 py-1 md:border xl:ml-[180px] xl:flex xl:w-[698px] xl:items-center xl:justify-center xl:rounded-md ">
 							<input

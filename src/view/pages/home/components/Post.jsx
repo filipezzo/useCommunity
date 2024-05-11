@@ -1,4 +1,4 @@
-import { CircleFadingPlus, MessageCircle } from "lucide-react";
+import { MessageCircle, ThumbsUpIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import avatar from "/profile7.svg";
 export function Post({ post }) {
@@ -15,7 +15,7 @@ export function Post({ post }) {
 					/>
 					<h3>{post.username}</h3>
 				</header>
-				<h2 className="group-hover:effect  flex-1 text-xl font-medium duration-300 hover:cursor-pointer  group-hover:border-none group-hover:text-transparent">
+				<h2 className="group-hover:effect flex-1  text-xl font-medium duration-300 hover:cursor-pointer group-hover:border-none  group-hover:bg-zinc-900/0 group-hover:text-transparent">
 					{post.titulo}
 				</h2>
 				<ul className="flex items-center gap-1 text-sm">
@@ -33,7 +33,10 @@ export function Post({ post }) {
 						</strong>
 					</div>
 
-					<CircleFadingPlus />
+					<div className="flex  gap-2">
+						{post.likes}
+						<ThumbsUpIcon />
+					</div>
 				</footer>
 			</Link>
 		</li>

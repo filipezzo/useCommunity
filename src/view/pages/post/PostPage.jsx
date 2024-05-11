@@ -24,6 +24,7 @@ function PostPage() {
 	const { id } = useParams();
 	const { user, setUser } = useAuth();
 	const isUserNotTheAuthor = post && post.id !== user.id;
+	console.log(isAlreadyLiked);
 
 	useEffect(() => {
 		const fetchPostData = async () => {
@@ -37,6 +38,9 @@ function PostPage() {
 				const userSnapshot = await get(userRef);
 				const userData = userSnapshot.val();
 				setPostUser(userData);
+				if (user && postData && postData.likes && user.likedPosts) {
+					setIsAlreadyLiked(user.likedPosts.includes(postData.postid));
+				}
 
 				setLoading(false);
 			} catch (error) {
@@ -47,7 +51,7 @@ function PostPage() {
 		};
 
 		fetchPostData();
-	}, [id]);
+	}, [id, user]);
 
 	const handleLike = async () => {
 		setIsAlreadyLiked(true);
@@ -63,9 +67,18 @@ function PostPage() {
 				const authorRef = ref(db, `/users/${post.id}`);
 				const updatedUserPoints = user.points + 1;
 				const authorPoints = postUser.points + 1;
-				await update(userRef, { points: updatedUserPoints });
+				const newLikedPost = [...(user.likedPosts || []), post.postid];
+				await update(userRef, {
+					...user,
+					points: updatedUserPoints,
+					likedPosts: newLikedPost,
+				});
 				await update(authorRef, { ...postUser, points: authorPoints });
-				setUser({ ...user, points: updatedUserPoints });
+				setUser({
+					...user,
+					points: updatedUserPoints,
+					likedPosts: newLikedPost,
+				});
 
 				toast.success("Post curtido com sucesso!");
 			} catch (error) {
@@ -86,6 +99,14 @@ function PostPage() {
 
 		if (!isAlreadyDisliked) {
 			try {
+				const newLikedPost = user.likedPosts.filter(
+					(postId) => postId !== post.postid,
+				);
+
+				const userRef = ref(db, `/users/${user.id}`);
+				await update(userRef, { ...user, likedPosts: newLikedPost });
+				setUser({ ...user, likedPosts: newLikedPost });
+
 				const postRef = ref(db, `/teste/${id}`);
 				const updatedLikesCount = post.likes - 1;
 				await update(postRef, { likes: updatedLikesCount });
@@ -155,14 +176,14 @@ function PostPage() {
 						</div>
 					)}
 				</section>
-				{isUserNotTheAuthor && (
-					<Comments
-						user={user}
-						post={post}
-						author={postUser}
-						setAuthor={setPostUser}
-					/>
-				)}
+
+				<Comments
+					user={user}
+					post={post}
+					author={postUser}
+					setAuthor={setPostUser}
+					isUserNotTheAuthor={isUserNotTheAuthor}
+				/>
 			</div>
 		</PageLayout>
 	);

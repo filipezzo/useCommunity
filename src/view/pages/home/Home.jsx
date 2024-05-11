@@ -11,7 +11,9 @@ export function Home() {
 	const [posts, setPosts] = useState({});
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
-	const arr = Object.values(posts).reverse();
+	const arr = Object.values(posts).sort((a, b) => {
+		return b.likes - a.likes;
+	}, 0);
 
 	const { user } = useAuth();
 

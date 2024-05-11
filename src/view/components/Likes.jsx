@@ -9,7 +9,7 @@ export function Likes({
 	liked,
 	post,
 }) {
-	const [counter, setCounter] = useState(0);
+	const [counter, setCounter] = useState(2);
 
 	const handleDislikeClick = () => {
 		onDislike();
@@ -36,10 +36,13 @@ export function Likes({
 
 				<button
 					className="opacity-70 "
-					disabled={isAlreadyLiked && liked}
+					disabled={isAlreadyLiked || liked}
 					onClick={handleLikeClick}
 				>
-					<ThumbsUp className={liked && "text-blue-500/70"} size={16} />
+					<ThumbsUp
+						className={isAlreadyLiked && "text-blue-500/70"}
+						size={16}
+					/>
 				</button>
 			</div>
 		</>

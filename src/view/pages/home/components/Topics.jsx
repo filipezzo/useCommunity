@@ -39,7 +39,7 @@ export function Topics() {
 						<li className="flex w-full items-center  justify-between " key={id}>
 							<div className="flex flex-1 items-center gap-2">
 								<span className="mr-1 text-blue-500/70">#{index + 1}</span>
-								<strong className="max-w-[9ch] truncate ">{username}</strong>
+								<strong className="max-w-[6ch] truncate ">{username}</strong>
 							</div>
 							<div className="flex w-fit items-center justify-center">
 								<Badge elo={points} className="mx-0 size-8 flex-1 " />
