@@ -1,38 +1,13 @@
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { Cpu } from "lucide-react";
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../../../app/lib/firebase";
+import { Toaster } from "react-hot-toast";
+import { Link } from "react-router-dom";
 import { InputLabel } from "../../components/InputLabel";
 import { Loader } from "../../components/Loader";
+import { useLoginController } from "../controllers/useLoginController";
 
 export function Login() {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [loading, setLoading] = useState(false);
-	const nav = useNavigate();
-
-	const handleLogin = async (e) => {
-		e.preventDefault();
-		if (!email || !password) {
-			return toast.error("Por favor, preencha todos os campos");
-		}
-		setLoading(true);
-		try {
-			await signInWithEmailAndPassword(auth, email, password);
-			nav("/");
-		} catch (error) {
-			if (
-				error.message.startsWith("Firebase: Error (auth/invalid-credential).")
-			) {
-				return toast.error("Email ou senha inválidos");
-			}
-			toast.error(error.message);
-		} finally {
-			setLoading(false);
-		}
-	};
+	const { email, password, handleLogin, loading, setEmail, setPassword } =
+		useLoginController();
 
 	return (
 		<>

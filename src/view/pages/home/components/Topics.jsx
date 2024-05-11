@@ -1,31 +1,11 @@
 import { Trophy } from "lucide-react";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import { api } from "../../../../app/utils/api";
 import { Badge } from "../../../components/Badge";
 import { Loader } from "../../../components/Loader";
+import { useRankingController } from "../../controllers/useRankingController";
 
 export function Topics() {
-	const [topRanking, setTopRanking] = useState([]);
-	const [loading, setLoading] = useState(false);
-	const ranks = Object.values(topRanking);
-	const orderedByPoints = ranks.sort((a, b) => b.points - a.points);
+	const { loading, orderedByPoints } = useRankingController();
 
-	useEffect(() => {
-		const fetchRanking = async () => {
-			setLoading(true);
-			try {
-				const { data } = await api.get(`/users.json`);
-				setTopRanking(data);
-			} catch (e) {
-				console.error(e);
-				toast.error("Erro Ao buscar ranking");
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchRanking();
-	}, []);
 	return (
 		<section className="hidden overflow-hidden p-5 xl:block  xl:h-[700px] xl:w-full xl:max-w-[250px] xl:rounded-md xl:bg-neutral-900/40  ">
 			<header className="mb-6 flex items-center  justify-between">

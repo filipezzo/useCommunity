@@ -1,21 +1,6 @@
-import { ThumbsDown, ThumbsUp } from "lucide-react";
-import { useState } from "react";
+import { ThumbsUp } from "lucide-react";
 
-export function Likes({
-	onDislike,
-	onLike,
-	isAlreadyLiked,
-
-	liked,
-	post,
-}) {
-	const [counter, setCounter] = useState(2);
-
-	const handleDislikeClick = () => {
-		onDislike();
-		setCounter(0);
-	};
-
+export function Likes({ onLike, isAlreadyLiked, liked, post }) {
 	const handleLikeClick = () => {
 		onLike();
 		setCounter(1);
@@ -26,14 +11,6 @@ export function Likes({
 				{post.likes}
 			</span>
 			<div className="flex items-center gap-4 ">
-				<button
-					className=" opacity-70"
-					disabled={post.likes === 0 || counter === 0}
-					onClick={handleDislikeClick}
-				>
-					<ThumbsDown size={16} />
-				</button>
-
 				<button
 					className="opacity-70 "
 					disabled={isAlreadyLiked || liked}
