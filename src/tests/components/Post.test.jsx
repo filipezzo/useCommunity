@@ -17,7 +17,7 @@ const testPost = {
 };
 
 describe("Post", () => {
-	it("Deve renderizar um post, quando o recebe via props", () => {
+	it("Deve renderizar um post quando o recebe via props", () => {
 		render(
 			<BrowserRouter>
 				<Post post={testPost} />
