@@ -1,6 +1,7 @@
 import { Button } from "../../../components/Button";
 import { Loader } from "../../../components/Loader";
 import { useCommentsController } from "../../controllers/useCommentsController";
+import { MentionListC } from "./MentionListC";
 
 export function Comments({
 	user,
@@ -9,20 +10,32 @@ export function Comments({
 	setAuthor,
 	isUserNotTheAuthor,
 }) {
-	const { comment, comments, loading, handleSubmit, setComment } =
-		useCommentsController({ post, user, author, setAuthor });
+	const {
+		comment,
+		comments,
+		loading,
+		handleSubmit,
+		handleChange,
+		showUsersFromComment,
+		mentionList,
+	} = useCommentsController({ post, user, author, setAuthor });
+
+	console.log(mentionList);
 
 	return (
 		<section>
 			{isUserNotTheAuthor && (
 				<form onSubmit={handleSubmit} className="my-4 flex flex-col gap-2">
 					<textarea
-						onChange={(e) => setComment(e.target.value)}
+						onChange={handleChange}
 						placeholder="Adicione seu comentário"
 						value={comment}
 						required
 						className=" effect h-[200px] w-full resize-none rounded-md p-3 "
 					/>
+					{showUsersFromComment && mentionList && (
+						<MentionListC list={mentionList} />
+					)}
 					<Button disabled={loading} className="mt-4" type="submit">
 						{loading ? <Loader /> : "Enviar"}
 					</Button>

@@ -1,4 +1,4 @@
-import { get, ref, update } from "firebase/database";
+import { get, query, ref, update } from "firebase/database";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../app/hooks/useAuth";
@@ -12,8 +12,10 @@ export function useCommentsController({
 	setAuthor,
 }) {
 	const [comment, setComment] = useState("");
-	const [comments, setComments] = useState(post?.comentarios);
+	const [comments, setComments] = useState(post?.comentarios || []);
 	const [loading, setLoading] = useState(false);
+	const [showUsersFromComment, setShowUsersFromComment] = useState(false);
+	const [mentionList, setMentionList] = useState([]);
 	const { setUser } = useAuth();
 
 	if (!post || !user || !author || !setAuthor) return;
@@ -56,6 +58,37 @@ export function useCommentsController({
 		}
 	};
 
+	const handleChange = async (e) => {
+		const newComment = e.target.value;
+		setComment(newComment);
+		setShowUsersFromComment(false);
+		if (comment.length > 2 && comment.startsWith("@")) {
+			const searchUser = comment.toLowerCase().split("@").at(-1).split(" ");
+
+			if (searchUser.length === 1) {
+				setShowUsersFromComment(true);
+				try {
+					const userRef = query(ref(db, "/users"));
+					const snapshot = await get(userRef);
+					if (snapshot.exists()) {
+						const userData = snapshot.val();
+						const allUsers = Object.values(userData);
+						const findUser = allUsers.filter((user) =>
+							user.username.includes(searchUser),
+						);
+
+						setMentionList(findUser);
+					}
+				} catch (e) {
+					toast.error("algo deu errado ao marcar users");
+					setShowUsersFromComment(false);
+				}
+			} else {
+				setShowUsersFromComment(false);
+			}
+		}
+	};
+
 	return {
 		handleSubmit,
 		loading,
@@ -63,5 +96,8 @@ export function useCommentsController({
 		setUser,
 		comments,
 		setComment,
+		handleChange,
+		showUsersFromComment,
+		mentionList,
 	};
 }
