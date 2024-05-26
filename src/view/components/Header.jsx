@@ -17,7 +17,7 @@ export function Header() {
 						<Cpu />
 					</Link>
 
-					{isHome && (
+					{isHome && user && (
 						<div className="md:effect hidden gap-2 px-2 py-1 md:border xl:ml-[180px] xl:flex xl:w-[698px] xl:items-center xl:justify-center xl:rounded-md ">
 							<input
 								className="flex-1 bg-transparent outline-none"

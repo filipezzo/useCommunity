@@ -1,4 +1,4 @@
-import { ThumbsUp } from "lucide-react";
+import { CircleAlert, Copy, CopyCheck, ThumbsUp } from "lucide-react";
 import { cn } from "../../../app/utils/cn";
 import { textFormatted } from "../../../app/utils/textFormatted";
 import { Badge } from "../../components/Badge";
@@ -19,6 +19,10 @@ function PostPage() {
 		liked,
 		user,
 		setPostUser,
+		handleReport,
+		report,
+		handleLinkCopy,
+		copy,
 	} = usePostPageController();
 
 	if (loading) return <Loader />;
@@ -29,7 +33,7 @@ function PostPage() {
 				<section>
 					{post && (
 						<div className="flex flex-col">
-							<header className="flex items-center gap-2">
+							<header className="flex select-none items-center gap-2">
 								<img
 									className="size-14 rounded-full object-cover"
 									src={post.avatar}
@@ -37,6 +41,14 @@ function PostPage() {
 								/>
 								<strong>{post.username}</strong>
 								<Badge className="mx-0 size-8" elo={postUser?.points} />
+								{copy ? (
+									<CopyCheck className="ml-auto text-blue-500/80" />
+								) : (
+									<Copy
+										onClick={handleLinkCopy}
+										className="ml-auto cursor-pointer"
+									/>
+								)}
 							</header>
 							<h1 className="my-4 bg-gradient-to-r from-blue-500 to-emerald-500 bg-clip-text text-4xl font-bold  text-transparent">
 								{post.titulo}
@@ -53,7 +65,16 @@ function PostPage() {
 								</p>
 							))}
 							{isUserNotTheAuthor ? (
-								<footer className="my-2 flex items-center justify-end gap-2 p-2">
+								<footer className="my-2 flex items-center justify-end gap-2  p-2">
+									<button
+										className="mr-auto flex items-center gap-2"
+										disabled={report}
+										onClick={handleReport}
+									>
+										<CircleAlert width={20} className="text-blue-500/80" />
+										{report && <p>Post denunciado com sucesso!</p>}
+									</button>
+
 									<Likes
 										onLike={handleLike}
 										isAlreadyLiked={isAlreadyLiked}

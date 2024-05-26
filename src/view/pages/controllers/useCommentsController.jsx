@@ -15,7 +15,7 @@ export function useCommentsController({
 	const [comments, setComments] = useState(post?.comentarios);
 	const [loading, setLoading] = useState(false);
 	const { setUser } = useAuth();
-	console.log(post, user, author);
+
 	if (!post || !user || !author || !setAuthor) return;
 
 	const handleSubmit = async (e) => {

@@ -1,7 +1,7 @@
 import { get, ref, update } from "firebase/database";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useAuth } from "../../../app/hooks/useAuth";
 import { db } from "../../../app/lib/firebase";
 
@@ -11,8 +11,11 @@ export function usePostPageController() {
 	const [isAlreadyLiked, setIsAlreadyLiked] = useState(false);
 	const [liked, setLiked] = useState(false);
 	const [loading, setLoading] = useState(true);
+	const [report, setReport] = useState(false);
+	const [copy, setCopy] = useState(false);
 
 	const { id } = useParams();
+	const { pathname } = useLocation();
 	const { user, setUser } = useAuth();
 	const isUserNotTheAuthor = post && post.id !== user.id;
 
@@ -82,6 +85,20 @@ export function usePostPageController() {
 			setPost({ ...post, likes: updatedLikesCount });
 		}
 	};
+
+	const handleReport = () => {
+		setReport(true);
+	};
+
+	const handleLinkCopy = () => {
+		setCopy(true);
+		const link = `https://use-community.vercel.app/${pathname}`;
+
+		navigator.clipboard.writeText(link).then(() => {
+			toast.success("Link do post copiado com sucesso!");
+		});
+	};
+
 	return {
 		post,
 		handleLike,
@@ -92,5 +109,9 @@ export function usePostPageController() {
 		liked,
 		user,
 		setPostUser,
+		handleReport,
+		report,
+		handleLinkCopy,
+		copy,
 	};
 }
