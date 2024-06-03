@@ -1,10 +1,13 @@
-import { Home } from "./pages/home/Home";
+import { Toaster } from "react-hot-toast";
+import { AuthProvider } from "./app/contexts/AuthContext";
+import { Router } from "./app/routes/Router";
 
 function App() {
 	return (
-		<div className="min-h-screen">
-			<Home />
-		</div>
+		<AuthProvider>
+			<Router />
+			<Toaster />
+		</AuthProvider>
 	);
 }
 

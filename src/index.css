@@ -7,3 +7,9 @@
 		font-family: "Roboto", sans-serif;
 	}
 }
+
+@layer components {
+	.effect {
+		@apply border border-blue-500/70 bg-zinc-900/40 bg-gradient-to-r from-blue-500 to-emerald-500 bg-clip-text outline-none transition-colors duration-300;
+	}
+}
