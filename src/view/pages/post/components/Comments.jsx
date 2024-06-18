@@ -20,8 +20,6 @@ export function Comments({
 		mentionList,
 	} = useCommentsController({ post, user, author, setAuthor });
 
-	console.log(mentionList);
-
 	return (
 		<section>
 			{isUserNotTheAuthor && (
