@@ -20,6 +20,7 @@ export function usePostPageController() {
 	const isUserNotTheAuthor = post && post.id !== user.id;
 
 	useEffect(() => {
+		console.log("executou");
 		const fetchPostData = async () => {
 			try {
 				const postRef = ref(db, `/teste/${id}`);
@@ -44,7 +45,7 @@ export function usePostPageController() {
 		};
 
 		fetchPostData();
-	}, [id, user]);
+	}, [id, user, setUser]);
 
 	const handleLike = async () => {
 		setIsAlreadyLiked(true);
