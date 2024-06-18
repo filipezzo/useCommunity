@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import PageLoader from "../../view/components/PageLoader";
 import { auth } from "../lib/firebase";
 import { api } from "../utils/api";
+
 export const AuthContext = createContext({});
 
 export function AuthProvider({ children }) {
@@ -13,9 +14,9 @@ export function AuthProvider({ children }) {
 	useEffect(() => {
 		setIsLoading(true);
 
-		const unsub = onAuthStateChanged(auth, async (user) => {
-			if (user) {
-				const { uid } = user;
+		const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
+			if (firebaseUser) {
+				const { uid } = firebaseUser;
 				try {
 					const { data } = await api.get(`/users/${uid}.json`);
 					setUser(data);
@@ -28,9 +29,9 @@ export function AuthProvider({ children }) {
 				setUser(null);
 				setIsLoading(false);
 			}
-
-			return () => unsub();
 		});
+
+		return () => unsub();
 	}, []);
 
 	if (isLoading) {

@@ -18,6 +18,7 @@ export function useCreatePostController() {
 		setIsLoading(true);
 
 		if (!title.trim() || !content.trim()) {
+			setIsLoading(false);
 			return toast.error("Preencha os campos!");
 		}
 		const post = {
@@ -36,8 +37,8 @@ export function useCreatePostController() {
 			await set(ref(db, `/teste/${postid}`), post);
 			const userRef = ref(db, `/users/${user.id}`);
 			const points = +user.points + 3;
-			await update(userRef, { ...user, points });
-			setUser({ ...user, points });
+			await update(userRef, { points });
+			setUser((prevUser) => ({ ...prevUser, points }));
 			nav("/");
 		} catch (e) {
 			if (e.message.startsWith("update failed")) {
@@ -49,6 +50,7 @@ export function useCreatePostController() {
 			setIsLoading(false);
 		}
 	};
+
 	return {
 		title,
 		handleSubmit,

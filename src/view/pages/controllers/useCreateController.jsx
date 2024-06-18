@@ -1,7 +1,4 @@
-import {
-	createUserWithEmailAndPassword,
-	signInWithEmailAndPassword,
-} from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -36,44 +33,43 @@ export function useCreateController() {
 		e.preventDefault();
 		setLoading(true);
 
-		if (!username || !email || !password || !avatar) {
+		if (!username || !email || !password || !avatar.file) {
 			setLoading(false);
 			return toast.error("Por favor, preencha todos os campos");
 		}
 
 		try {
 			const imgUrl = await upload(avatar.file);
-			const createUser = await createUserWithEmailAndPassword(
+			const createUserResult = await createUserWithEmailAndPassword(
 				auth,
 				email,
 				password,
 			);
-			await set(ref(db, `users/${createUser.user.uid}`), {
+			const { user } = createUserResult;
+
+			await set(ref(db, `users/${user.uid}`), {
 				username,
 				email,
-				id: createUser.user.uid,
+				id: user.uid,
 				password,
 				avatar: imgUrl,
 				points: 0,
 			});
-			setUser({ ...createUser, avatar: imgUrl });
-			await signInWithEmailAndPassword(auth, email, password);
-			toast.success("Conta criada com sucesso!");
-			nav("/");
+
+			toast.success("Conta criada com sucesso! Por favor, faça login.");
+			nav("/login");
 		} catch (error) {
 			if (error.message === "file is null") {
-				return toast.error("Por favor, adicione um Avatar");
-			} else if (error.message.startsWith("Firebase: Password should be")) {
-				return toast.error("Sua senha deve conter pelo menos 6 caracteres ");
-			} else if (
-				error.message.startsWith("Firebase: Error (auth/email-already-in-use)")
-			) {
-				return toast.error("Usuário ou email já em uso.");
+				toast.error("Por favor, adicione um Avatar");
+			} else if (error.code === "auth/weak-password") {
+				toast.error("Sua senha deve conter pelo menos 6 caracteres");
+			} else if (error.code === "auth/email-already-in-use") {
+				toast.error("Usuário ou email já em uso.");
+			} else {
+				toast.error(error.message);
 			}
-			toast.error(error.message);
 		} finally {
 			setLoading(false);
-			clearInterval;
 		}
 	};
 
