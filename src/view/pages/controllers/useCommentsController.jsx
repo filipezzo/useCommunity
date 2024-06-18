@@ -12,7 +12,17 @@ export function useCommentsController({ post, user, author, setAuthor }) {
 	const [mentionList, setMentionList] = useState([]);
 	const { setUser } = useAuth();
 
-	if (!post || !user || !author || !setAuthor) return;
+	if (!post || !user || !author || !setAuthor) {
+		return {
+			comment: "",
+			comments: [],
+			loading: false,
+			handleSubmit: () => {},
+			handleChange: () => {},
+			showUsersFromComment: false,
+			mentionList: [],
+		};
+	}
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();

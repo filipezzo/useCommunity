@@ -7,7 +7,7 @@ export function Topics() {
 	const { loading, orderedByPoints } = useRankingController();
 
 	return (
-		<section className="hidden overflow-hidden p-5 xl:block  xl:h-[700px] xl:w-full xl:max-w-[250px] xl:rounded-md xl:bg-neutral-900/40  ">
+		<section className="hidden overflow-scroll p-5 xl:block  xl:h-[700px] xl:w-full xl:max-w-[250px] xl:rounded-md xl:bg-neutral-900/40  ">
 			<header className="mb-6 flex items-center  justify-between">
 				<h2 className="text-xl">Ranking </h2>
 				<Trophy size={20} />

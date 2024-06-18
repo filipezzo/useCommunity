@@ -55,7 +55,7 @@ export function Login() {
 						</button>
 					</form>
 				</div>
-				<div className=" hidden max-h-[700px]   overflow-hidden rounded-md    lg:flex lg:w-1/2 lg:max-w-[600px] lg:justify-center ">
+				<div className=" hidden max-h-[700px]   overflow-hidden rounded-md    xl:flex xl:w-1/2 xl:max-w-[600px] xl:justify-center ">
 					<img
 						className="h-full rounded-md object-cover  sepia "
 						src="https://images.unsplash.com/photo-1579567761406-4684ee0c75b6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

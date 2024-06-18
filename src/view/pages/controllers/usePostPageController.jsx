@@ -20,22 +20,24 @@ export function usePostPageController() {
 	const isUserNotTheAuthor = post && post.id !== user.id;
 
 	useEffect(() => {
-		console.log("executou");
 		const fetchPostData = async () => {
 			try {
 				const postRef = ref(db, `/teste/${id}`);
 				const snapshot = await get(postRef);
 				const postData = snapshot.val();
-				setPost(postData);
+				if (postData) {
+					setPost(postData);
 
-				const userRef = ref(db, `/users/${postData.id}`);
-				const userSnapshot = await get(userRef);
-				const userData = userSnapshot.val();
-				setPostUser(userData);
-				if (user && postData && postData.likes && user.likedPosts) {
-					setIsAlreadyLiked(user.likedPosts.includes(postData.postid));
+					const userRef = ref(db, `/users/${postData.id}`);
+					const userSnapshot = await get(userRef);
+					const userData = userSnapshot.val();
+					setPostUser(userData);
+					if (user && postData && postData.likes && user.likedPosts) {
+						setIsAlreadyLiked(user.likedPosts.includes(postData.postid));
+					}
+				} else {
+					throw new Error("Post not found");
 				}
-
 				setLoading(false);
 			} catch (error) {
 				console.error("Erro ao buscar dados do post:", error);
@@ -48,6 +50,11 @@ export function usePostPageController() {
 	}, [id, user, setUser]);
 
 	const handleLike = async () => {
+		if (!postUser) {
+			toast.error("Usuário do post não encontrado");
+			return;
+		}
+
 		setIsAlreadyLiked(true);
 		setLiked(true);
 
@@ -57,24 +64,26 @@ export function usePostPageController() {
 				const updatedLikesCount = post.likes + 1;
 				await update(postRef, { likes: updatedLikesCount });
 				setPost({ ...post, likes: updatedLikesCount });
-				const userRef = ref(db, `/users/${user.id}`);
-				const authorRef = ref(db, `/users/${post.id}`);
-				const updatedUserPoints = user.points + 1;
-				const authorPoints = postUser.points + 1;
-				const newLikedPost = [...(user.likedPosts || []), post.postid];
-				await update(userRef, {
-					...user,
-					points: updatedUserPoints,
-					likedPosts: newLikedPost,
-				});
-				await update(authorRef, { ...postUser, points: authorPoints });
-				setUser({
-					...user,
-					points: updatedUserPoints,
-					likedPosts: newLikedPost,
-				});
 
-				toast.success("Post curtido com sucesso!");
+				if (user && user.id && post && post.id) {
+					const userRef = ref(db, `/users/${user.id}`);
+					const authorRef = ref(db, `/users/${post.id}`);
+					const updatedUserPoints = user.points + 1;
+					const authorPoints = postUser.points + 1;
+					const newLikedPost = [...(user.likedPosts || []), post.postid];
+					await update(userRef, {
+						points: updatedUserPoints,
+						likedPosts: newLikedPost,
+					});
+					await update(authorRef, { points: authorPoints });
+					setUser((prevUser) => ({
+						...prevUser,
+						points: updatedUserPoints,
+						likedPosts: newLikedPost,
+					}));
+
+					toast.success("Post curtido com sucesso!");
+				}
 			} catch (error) {
 				console.error("Erro ao curtir o post:", error);
 				toast.error("Erro ao curtir o post");
