@@ -25,16 +25,19 @@ export function usePostPageController() {
 				const postRef = ref(db, `/teste/${id}`);
 				const snapshot = await get(postRef);
 				const postData = snapshot.val();
-				setPost(postData);
+				if (postData) {
+					setPost(postData);
 
-				const userRef = ref(db, `/users/${postData.id}`);
-				const userSnapshot = await get(userRef);
-				const userData = userSnapshot.val();
-				setPostUser(userData);
-				if (user && postData && postData.likes && user.likedPosts) {
-					setIsAlreadyLiked(user.likedPosts.includes(postData.postid));
+					const userRef = ref(db, `/users/${postData.id}`);
+					const userSnapshot = await get(userRef);
+					const userData = userSnapshot.val();
+					setPostUser(userData);
+					if (user && postData && postData.likes && user.likedPosts) {
+						setIsAlreadyLiked(user.likedPosts.includes(postData.postid));
+					}
+				} else {
+					throw new Error("Post not found");
 				}
-
 				setLoading(false);
 			} catch (error) {
 				console.error("Erro ao buscar dados do post:", error);
@@ -47,6 +50,11 @@ export function usePostPageController() {
 	}, [id, user, setUser]);
 
 	const handleLike = async () => {
+		if (!postUser) {
+			toast.error("Usuário do post não encontrado");
+			return;
+		}
+
 		setIsAlreadyLiked(true);
 		setLiked(true);
 
