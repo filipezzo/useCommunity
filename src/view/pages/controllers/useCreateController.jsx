@@ -1,4 +1,7 @@
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+	createUserWithEmailAndPassword,
+	signInWithEmailAndPassword,
+} from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -54,6 +57,7 @@ export function useCreateController() {
 				points: 0,
 			});
 			setUser({ ...createUser, avatar: imgUrl });
+			await signInWithEmailAndPassword(auth, email, password);
 			toast.success("Conta criada com sucesso!");
 			nav("/");
 		} catch (error) {
