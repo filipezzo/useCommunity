@@ -3,7 +3,6 @@ import { ThumbsUp } from "lucide-react";
 export function Likes({ onLike, isAlreadyLiked, liked, post }) {
 	const handleLikeClick = () => {
 		onLike();
-		setCounter(1);
 	};
 	return (
 		<>

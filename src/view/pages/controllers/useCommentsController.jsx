@@ -4,13 +4,7 @@ import toast from "react-hot-toast";
 import { useAuth } from "../../../app/hooks/useAuth";
 import { db } from "../../../app/lib/firebase";
 
-export function useCommentsController({
-	post,
-	user,
-	author,
-
-	setAuthor,
-}) {
+export function useCommentsController({ post, user, author, setAuthor }) {
 	const [comment, setComment] = useState("");
 	const [comments, setComments] = useState(post?.comentarios || []);
 	const [loading, setLoading] = useState(false);
@@ -24,14 +18,14 @@ export function useCommentsController({
 		e.preventDefault();
 		if (!comment.trim()) return;
 		setLoading(true);
-		const newComment = {
-			id: crypto.randomUUID(),
-			autor: user.username,
-			avatar: user.avatar,
-			conteudo: comment,
-		};
 
 		try {
+			const newComment = {
+				id: crypto.randomUUID(),
+				autor: user.username,
+				avatar: user.avatar,
+				conteudo: comment,
+			};
 			const postRef = ref(db, `teste/${post?.postid}`);
 			const postSnapshot = await get(postRef);
 			if (postSnapshot.exists()) {
