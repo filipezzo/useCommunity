@@ -27,7 +27,7 @@ export function useCreateController() {
 		}
 	};
 
-	const { setUser } = useAuth();
+	const { setUser, updateUser } = useAuth();
 
 	const handleRegister = async (e) => {
 		e.preventDefault();
@@ -55,6 +55,8 @@ export function useCreateController() {
 				avatar: imgUrl,
 				points: 0,
 			});
+
+			await updateUser(user);
 
 			toast.success("Conta criada com sucesso! Por favor, faça login.");
 			nav("/login");
