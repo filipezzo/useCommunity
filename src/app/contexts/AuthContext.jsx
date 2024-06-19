@@ -11,25 +11,27 @@ export function AuthProvider({ children }) {
 	const [user, setUser] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const updateUser = async (firebaseUser) => {
+		if (firebaseUser) {
+			const { uid } = firebaseUser;
+			try {
+				const { data } = await api.get(`/users/${uid}.json`);
+				setUser(data);
+			} catch {
+				toast.error("Erro ao buscar dados do usuário");
+			} finally {
+				setIsLoading(false);
+			}
+		} else {
+			setUser(null);
+			setIsLoading(false);
+		}
+	};
+
 	useEffect(() => {
 		setIsLoading(true);
 
-		const unsub = onAuthStateChanged(auth, async (firebaseUser) => {
-			if (firebaseUser) {
-				const { uid } = firebaseUser;
-				try {
-					const { data } = await api.get(`/users/${uid}.json`);
-					setUser(data);
-				} catch {
-					toast.error("Erro ao buscar dados do usuário");
-				} finally {
-					setIsLoading(false);
-				}
-			} else {
-				setUser(null);
-				setIsLoading(false);
-			}
-		});
+		const unsub = onAuthStateChanged(auth, updateUser);
 
 		return () => unsub();
 	}, []);
@@ -37,8 +39,9 @@ export function AuthProvider({ children }) {
 	if (isLoading) {
 		return <PageLoader />;
 	}
+
 	return (
-		<AuthContext.Provider value={{ user, isLoading, setUser }}>
+		<AuthContext.Provider value={{ user, isLoading, setUser, updateUser }}>
 			{children}
 		</AuthContext.Provider>
 	);
