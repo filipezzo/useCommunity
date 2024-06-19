@@ -33,7 +33,7 @@ export function useCreateController() {
 		e.preventDefault();
 		setLoading(true);
 
-		if (!username || !email || !password || !avatar.file) {
+		if (!username || !email || !password) {
 			setLoading(false);
 			return toast.error("Por favor, preencha todos os campos");
 		}
